@@ -1,7 +1,7 @@
-def solution(M, F):
+def solution(x, y):
     gen = 0
-    m = int(M)
-    f = int(F)
+    m = int(x)
+    f = int(y)
     while True:
         if m == 1 and f == 1:
             return str(gen)
