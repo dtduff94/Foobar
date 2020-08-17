@@ -32,7 +32,6 @@ def getMatrixMinor(m,i,j):
     return [row[:j] + row[j+1:] for row in (m[:i]+m[i+1:])]
 
 def getMatrixDeterminant(m):
-    #base case for 2x2 matrix
     if len(m) == 2:
         return m[0][0]*m[1][1]-m[0][1]*m[1][0]
 
@@ -43,12 +42,10 @@ def getMatrixDeterminant(m):
 
 def getMatrixInverse(m):
     determinant = getMatrixDeterminant(m)
-    #special case for 2x2 matrix:
     if len(m) == 2:
         return [[m[1][1]/determinant, -1*m[0][1]/determinant],
                 [-1*m[1][0]/determinant, m[0][0]/determinant]]
 
-    #find matrix of cofactors
     cofactors = []
     for r in range(len(m)):
         cofactorRow = []
@@ -62,17 +59,11 @@ def getMatrixInverse(m):
             cofactors[r][c] = cofactors[r][c]/determinant
     return cofactors
 
-
-###################
-### actual code ###
-###################
-
 def solution(m):
 	if len(m) == 1:
 		return [1,1]
 	abso = []
 	nabso = []
-	#find absorbing states
 	for ind, val in enumerate(m):
 		if sum(val) == 0:
 			abso.append(ind)
@@ -83,7 +74,6 @@ def solution(m):
 		return [1,1]
 
 	order = abso + nabso
-	#prepare limiting matrix
 	limM = []
 	n = 0
 	for i in abso:
@@ -99,7 +89,6 @@ def solution(m):
 			temp2.append(Fraction(val, sum(temp) ))  
 		limM.append(temp2)
 	
-	#creating matrix subsets
 	I, R, Q = [], [], []
 
 	for p in range(len(abso),len(limM)):
@@ -122,14 +111,11 @@ def solution(m):
 	
 	FR = matmult(F,R)
 	
-	#fraction to list
 	alm = []
 	for i in FR[0]:
 		alm.append([i.numerator, i.denominator])
 	
-
 	lcm1 = lcmm([i[1] for i in alm])
 	
-	# make fractions common denominator and return
 	ende = [ (lcm1/i[1]) * i[0] for i in alm ]
 	return ende + [lcm1]
